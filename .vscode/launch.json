@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "d:/HỌC TẬP/Tài liệu học đại học/Tài liệu năm 4/Kì 1/Hệ điều hành/code_hedieuhanh_nhom5",
+      "program": "d:/HỌC TẬP/Tài liệu học đại học/Tài liệu năm 4/Kì 1/Hệ điều hành/code_hedieuhanh_nhom5/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
