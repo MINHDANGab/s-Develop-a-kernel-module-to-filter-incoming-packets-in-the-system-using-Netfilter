@@ -12,12 +12,12 @@ MODULE_AUTHOR("mdang");
 MODULE_DESCRIPTION("Simple firewall: block IP + bandwidth rate limit");
 MODULE_VERSION("0.4");
 
-/* IP bị chặn và IP bị rate-limit */
+
 static __be32 block_ip;
 static __be32 ratelimit_ip;
 
-/* Bandwidth limit (bytes per second) */
-static unsigned long rl_bytes_per_sec = 200000;  // ~200 KB/s
+
+static unsigned long rl_bytes_per_sec = 200000;  
 static unsigned long rl_window = HZ;
 
 static unsigned long rl_window_start;
@@ -35,22 +35,22 @@ static unsigned int fw_hook_func(void *priv, struct sk_buff *skb, const struct n
     if (!iph)
         return NF_ACCEPT;
 
-    /* 1. Chặn toàn bộ gói từ IP */
+  
     if (iph->saddr == block_ip) {
         pr_info("fw_mod: DROP packet from blocked IP %pI4\n", &iph->saddr);
         return NF_DROP;
     }
 
-    /* 2. Bandwidth rate-limit */
+
     if (iph->saddr == ratelimit_ip) {
 
-        /* Reset nếu sang cửa sổ thời gian mới */
+     
         if (time_after(jiffies, rl_window_start + rl_window)) {
             rl_window_start = jiffies;
             atomic_long_set(&rl_bytes_count, 0);
         }
 
-        /* Tính tổng byte */
+  
         new_bytes = atomic_long_add_return(skb->len, &rl_bytes_count);
 
         pr_info("fw_mod: bytes=%ld\n", new_bytes);
@@ -66,7 +66,7 @@ static unsigned int fw_hook_func(void *priv, struct sk_buff *skb, const struct n
     return NF_ACCEPT;
 }
 
-/* Netfilter Hook */
+
 static struct nf_hook_ops fw_nfho = {
     .hook     = fw_hook_func,
     .pf       = PF_INET,
@@ -78,7 +78,7 @@ static int __init fw_module_init(void)
 {
     int ret;
 
-    /* IP cần block và IP cần giới hạn băng thông */
+   
     block_ip     = in_aton("192.168.1.102");
     ratelimit_ip = in_aton("192.168.1.103");
 
